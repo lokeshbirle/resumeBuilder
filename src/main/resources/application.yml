@@ -1,0 +1,9 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/resumebuilder
+server:
+  port: 8080
+jwt:
+  secret: niralosResumeBuilderSuperSecretKeyForJwtSigning2024ChangeThisInProd
+  expiration: 86400000
