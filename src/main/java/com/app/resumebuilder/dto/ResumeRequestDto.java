@@ -1,5 +1,6 @@
 package com.app.resumebuilder.dto;
 
+import com.app.resumebuilder.model.CustomSection;
 import com.app.resumebuilder.model.Education;
 import com.app.resumebuilder.model.Experience;
 import com.app.resumebuilder.model.PersonalInfo;
@@ -17,5 +18,7 @@ public class ResumeRequestDto {
     private List<Project> projects;
     private List<String> skills;
     private List<String> certifications;
-    private List<String> sectionOrder;    // <-- ADDED THIS FIELD
+    private List<String> achievements;
+    private List<CustomSection> customSections; // THIS FOR DYNAMIC SECTIONS
+    private List<String> sectionOrder;
 }

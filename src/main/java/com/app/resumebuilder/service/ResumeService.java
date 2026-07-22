@@ -54,6 +54,10 @@ public class ResumeService {
         resume.setProjects(dto.getProjects());
         resume.setSkills(dto.getSkills());
         resume.setCertifications(dto.getCertifications());
-        resume.setSectionOrder(dto.getSectionOrder()); // <-- ADDED THIS LINE
+
+        resume.setAchievements(dto.getAchievements());
+        resume.setCustomSections(dto.getCustomSections());
+
+        resume.setSectionOrder(dto.getSectionOrder());
     }
 }

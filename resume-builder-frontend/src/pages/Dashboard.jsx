@@ -156,20 +156,22 @@ export default function Dashboard() {
                         </button>
                     </div>
 
-                    {/* Stats */}
+                    {/* Stats Section with Hover Effects */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
 
-                        <div className="bg-white/[0.06] backdrop-blur-xl rounded-3xl p-6 border border-white/5 shadow-lg">
-                            <FolderOpen className="text-[#E50914] w-10 h-10 mb-4" />
-                            <p className="text-slate-400">Total Resumes</p>
+                        {/* Card 1: Total Resumes */}
+                        <div className="group bg-white/[0.06] backdrop-blur-xl rounded-3xl p-6 border border-white/10 shadow-lg cursor-pointer transition-all duration-300 hover:bg-white/[0.12] hover:border-[#E50914]/50 hover:shadow-[0_0_25px_rgba(229,9,20,0.3)] hover:-translate-y-1">
+                            <FolderOpen className="text-[#E50914] w-10 h-10 mb-4 transition-transform duration-300 group-hover:scale-110" />
+                            <p className="text-slate-400 transition-colors duration-300 group-hover:text-slate-200">Total Resumes</p>
                             <h2 className="text-4xl font-bold mt-2">
                                 {resumes.length}
                             </h2>
                         </div>
 
-                        <div className="bg-white/[0.06] backdrop-blur-xl rounded-3xl p-6 border border-white/5 shadow-lg">
-                            <Clock3 className="text-[#E50914] w-10 h-10 mb-4" />
-                            <p className="text-slate-400">Last Updated</p>
+                        {/* Card 2: Last Updated */}
+                        <div className="group bg-white/[0.06] backdrop-blur-xl rounded-3xl p-6 border border-white/10 shadow-lg cursor-pointer transition-all duration-300 hover:bg-white/[0.12] hover:border-[#E50914]/50 hover:shadow-[0_0_25px_rgba(229,9,20,0.3)] hover:-translate-y-1">
+                            <Clock3 className="text-[#E50914] w-10 h-10 mb-4 transition-transform duration-300 group-hover:scale-110" />
+                            <p className="text-slate-400 transition-colors duration-300 group-hover:text-slate-200">Last Updated</p>
                             <h2 className="text-2xl font-bold mt-2">
                                 {latestResumeDate
                                     ? formatDate(latestResumeDate)
@@ -177,9 +179,10 @@ export default function Dashboard() {
                             </h2>
                         </div>
 
-                        <div className="bg-white/[0.06] backdrop-blur-xl rounded-3xl p-6 border border-white/5 shadow-lg">
-                            <Award className="text-[#E50914] w-10 h-10 mb-4" />
-                            <p className="text-slate-400">
+                        {/* Card 3: ATS Ready Templates */}
+                        <div className="group bg-white/[0.06] backdrop-blur-xl rounded-3xl p-6 border border-white/10 shadow-lg cursor-pointer transition-all duration-300 hover:bg-white/[0.12] hover:border-[#E50914]/50 hover:shadow-[0_0_25px_rgba(229,9,20,0.3)] hover:-translate-y-1">
+                            <Award className="text-[#E50914] w-10 h-10 mb-4 transition-transform duration-300 group-hover:scale-110" />
+                            <p className="text-slate-400 transition-colors duration-300 group-hover:text-slate-200">
                                 ATS Ready Templates
                             </p>
                             <h2 className="text-4xl font-bold mt-2">
@@ -233,50 +236,50 @@ export default function Dashboard() {
                     </div>
                 )}
 
-                {/* RESUME GRID */}
+                {/* RESUME GRID (Updated with smooth hover effects & glowing shadows) */}
                 {!loading && !error && resumes.length > 0 && (
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
 
                         {resumes.map((resume) => (
                             <div
                                 key={resume.id}
-                                className="bg-white rounded-[32px] shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 p-8 border border-gray-100"
+                                className="group bg-white rounded-[32px] shadow-md border border-gray-200/80 p-8 transition-all duration-300 hover:-translate-y-1.5 hover:border-[#E50914]/40 hover:shadow-[0_15px_35px_rgba(229,9,20,0.15)] relative overflow-hidden"
                             >
+                                {/* Decorative Red Accent Line on Top of Card on Hover */}
+                                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#E50914] to-[#B20710] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
                                 <div className="flex justify-between items-start mb-6">
 
-                                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-r from-black to-gray-900 shadow-lg shadow-gray-300 flex items-center justify-center">
+                                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-r from-black to-gray-900 shadow-lg shadow-gray-300/50 flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:shadow-red-900/20">
                                         <FileText className="text-white w-8 h-8" />
                                     </div>
 
-                                    {/*<span className="text-xs bg-blue-100 text-red-500 px-4 py-2 rounded-full font-semibold">*/}
-                                    {/*    ATS Ready*/}
-                                    {/*</span>*/}
-
-                                    <span className="text-xs text-[#E50914] border border-black px-4 py-2 rounded-full font-semibold bg-white">
-                                            ATS Ready
+                                    <span className="text-xs text-[#E50914] border border-[#E50914]/30 px-4 py-2 rounded-full font-semibold bg-red-50/50 group-hover:bg-[#E50914] group-hover:text-white transition-all duration-300">
+                                        ATS Ready
                                     </span>
                                 </div>
 
-                                <h2 className="text-2xl font-bold text-slate-900 truncate">
+                                <h2 className="text-2xl font-bold text-slate-900 truncate group-hover:text-[#E50914] transition-colors duration-300">
                                     {resume.title || "Untitled Resume"}
                                 </h2>
 
-                                <p className="text-slate-500 mt-2 truncate">
+                                <p className="text-slate-500 mt-2 truncate font-medium">
                                     {resume.personalInfo?.fullName ||
                                         "No Name Added"}
                                 </p>
 
-                                <div className="flex items-center gap-2 text-slate-400 mt-5">
-                                    <Calendar className="w-4 h-4" />
+                                <div className="flex items-center gap-2 text-slate-400 mt-5 text-sm">
+                                    <Calendar className="w-4 h-4 text-slate-400 group-hover:text-[#E50914] transition-colors duration-300" />
                                     Updated {formatDate(resume.updatedAt)}
                                 </div>
 
+                                {/* Action Buttons */}
                                 <div className="grid grid-cols-3 gap-3 mt-8">
 
                                     <button
                                         onClick={() => handleEdit(resume.id)}
-                                        className="bg-blue-100 text-blue-700 rounded-xl py-3 flex justify-center items-center hover:bg-blue-600 hover:text-white transition-all duration-300"
+                                        title="Edit Resume"
+                                        className="bg-blue-50 text-blue-600 rounded-2xl py-3 flex justify-center items-center hover:bg-blue-600 hover:text-white hover:scale-105 active:scale-95 transition-all duration-300 shadow-sm"
                                     >
                                         <Edit3 className="w-5 h-5" />
                                     </button>
@@ -288,7 +291,8 @@ export default function Dashboard() {
                                                 resume.title
                                             )
                                         }
-                                        className="bg-green-100 text-green-700 rounded-xl py-3 flex justify-center items-center hover:bg-green-600 hover:text-white transition-all duration-300"
+                                        title="Download PDF"
+                                        className="bg-emerald-50 text-emerald-600 rounded-2xl py-3 flex justify-center items-center hover:bg-emerald-600 hover:text-white hover:scale-105 active:scale-95 transition-all duration-300 shadow-sm"
                                     >
                                         <Download className="w-5 h-5" />
                                     </button>
@@ -298,7 +302,8 @@ export default function Dashboard() {
                                             handleDelete(resume.id)
                                         }
                                         disabled={deletingId === resume.id}
-                                        className="bg-red-100 text-red-700 rounded-xl py-3 flex justify-center items-center hover:bg-red-600 hover:text-white transition-all duration-300 disabled:opacity-50"
+                                        title="Delete Resume"
+                                        className="bg-rose-50 text-rose-600 rounded-2xl py-3 flex justify-center items-center hover:bg-rose-600 hover:text-white hover:scale-105 active:scale-95 transition-all duration-300 disabled:opacity-50 shadow-sm"
                                     >
                                         <Trash2 className="w-5 h-5" />
                                     </button>

@@ -23,10 +23,11 @@ public class Resume {
     private List<Education> education;
     private List<Experience> experience;
     private List<Project> projects;
-    private List<String> skills;          // now supports "Category: val1, val2" format
+    private List<String> skills;
     private List<String> certifications;
-    private List<String> achievements;    // NEW
-    private List<String> sectionOrder;    // <-- ADDED THIS FIELD FOR DRAG & DROP ORDERING
+    private List<String> achievements;
+    private List<CustomSection> customSections;
+    private List<String> sectionOrder;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

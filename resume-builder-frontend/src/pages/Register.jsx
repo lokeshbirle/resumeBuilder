@@ -1,5 +1,3 @@
-// src/pages/Register.jsx
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -11,21 +9,19 @@ import {
     EyeOff,
     UserPlus,
     Sparkles,
-    CloudUpload
+    ShieldCheck
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
-function Feature({ icon, title, desc }) {
+function Feature({ icon, title }) {
     return (
-        <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center">
+        <div className="flex items-center gap-3.5 bg-black/60 hover:bg-red-950/20 border border-red-900/20 hover:border-red-600/50 px-4 py-3.5 rounded-xl backdrop-blur-md transition-all duration-300 hover:scale-[1.02] cursor-default group hover:shadow-[0_0_15px_rgba(220,38,38,0.15)]">
+            <div className="w-9 h-9 rounded-lg bg-red-600/10 border border-red-600/20 group-hover:bg-red-600 group-hover:border-red-500 flex items-center justify-center shrink-0 transition-all duration-300">
                 {icon}
             </div>
-
-            <div>
-                <h3 className="text-white font-semibold">{title}</h3>
-                <p className="text-slate-400 text-sm">{desc}</p>
-            </div>
+            <span className="text-gray-300 group-hover:text-white text-sm font-medium transition-colors">
+                {title}
+            </span>
         </div>
     );
 }
@@ -43,187 +39,196 @@ export default function Register() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         try {
             setLoading(true);
             setError("");
 
-            await register(name, email, password);
-
+            if (register) {
+                await register(name, email, password);
+            }
             navigate("/dashboard");
         } catch (err) {
-            setError(
-                err.response?.data?.error ||
-                "Registration failed"
-            );
+            setError(err.response?.data?.error || "Registration failed. Please try again.");
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="min-h-screen bg-slate-100 flex items-center justify-center p-6">
-            <div className="w-full max-w-7xl bg-white rounded-[32px] shadow-2xl overflow-hidden flex flex-col lg:flex-row transition-all duration-500 hover:shadow-[0_25px_60px_rgba(178,7,16,0.20)]">
+        <div className="min-h-screen bg-[#000000] flex items-center justify-center p-4 md:p-6 font-sans relative overflow-hidden">
 
-                {/* Left Section */}
-                <div className="lg:w-1/2 bg-gradient-to-br from-black via-[#120004] to-[#8B0000] p-14 relative overflow-hidden">
+            {/* Background Ambient Glows */}
+            <div className="absolute -top-24 -left-24 w-96 h-96 bg-red-600/15 rounded-full blur-[120px] pointer-events-none"></div>
+            <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-red-900/20 rounded-full blur-[140px] pointer-events-none"></div>
 
-                    <div className="absolute top-0 right-0 w-72 h-72 bg-red-500/10 rounded-full blur-3xl"></div>
+            <div className="w-full max-w-4xl bg-[#08080a] rounded-2xl shadow-[0_0_50px_rgba(220,38,38,0.12)] border border-red-900/30 overflow-hidden flex flex-col lg:flex-row relative z-10">
+
+                {/* Left Hero Section - Intense Red & Black Gradient */}
+                <div className="lg:w-5/12 bg-gradient-to-br from-[#180304] via-[#090203] to-[#000000] p-8 md:p-10 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-red-900/20 relative overflow-hidden">
 
                     <div className="relative z-10">
-
-                        <div className="flex items-center gap-4 mb-14">
-                            <div className="w-14 h-14 rounded-2xl border border-red-500/30 flex items-center justify-center">
-                                <FileText className="text-[#E50914] w-8 h-8" />
+                        {/* Logo */}
+                        <div className="flex items-center gap-3 mb-8 group cursor-pointer w-fit">
+                            <div className="w-10 h-10 rounded-xl bg-red-600 flex items-center justify-center shadow-[0_0_20px_rgba(220,38,38,0.5)] group-hover:scale-105 group-hover:shadow-[0_0_25px_rgba(220,38,38,0.8)] transition-all duration-300">
+                                <FileText className="text-white w-5 h-5" />
                             </div>
-
-                            <div>
-                                <h1 className="text-white text-4xl font-bold">
-                                    Resume <span className="text-[#E50914]">Builder</span>
-                                </h1>
-
-                                <p className="text-slate-400">
-                                    Create. Customize. Impress.
-                                </p>
-                            </div>
+                            <h1 className="text-white text-xl font-bold tracking-tight">
+                                Resume <span className="text-red-500 group-hover:text-red-400 transition-colors">Builder</span>
+                            </h1>
                         </div>
 
-                        <h2 className="text-5xl font-bold text-white leading-tight mb-5">
-                            Build Your Professional
-                            <br />
-                            <span className="text-[#E50914]">Resume</span> in Minutes
-                        </h2>
-
-                        <div className="w-16 h-1 bg-[#E50914] rounded-full mb-8"></div>
-
-                        <p className="text-slate-400 mb-12 text-lg">
-                            Join thousands of professionals who landed
-                            their dream jobs with modern ATS-friendly resumes.
-                        </p>
-
-                        <div className="space-y-8">
-                            <Feature
-                                icon={<FileText className="text-[#E50914] w-5 h-5" />}
-                                title="Professional Templates"
-                                desc="Choose from expertly designed templates"
-                            />
-
-                            <Feature
-                                icon={<Sparkles className="text-[#E50914] w-5 h-5" />}
-                                title="AI Suggestions"
-                                desc="Generate better resume content instantly"
-                            />
-
-                            <Feature
-                                icon={<CloudUpload className="text-[#E50914] w-5 h-5" />}
-                                title="Export & Share"
-                                desc="Download beautiful PDF resumes"
-                            />
+                        {/* Heading */}
+                        <div className="space-y-2 mb-8">
+                            <h2 className="text-2xl font-bold text-white tracking-tight">
+                                Create Account
+                            </h2>
+                            <p className="text-gray-400 text-xs leading-relaxed">
+                                Join thousands of job seekers and build high-scoring ATS resumes in minutes.
+                            </p>
                         </div>
 
+                        {/* Feature Badges */}
+                        <div className="space-y-3">
+                            <Feature
+                                icon={<FileText className="text-red-500 group-hover:text-white w-4 h-4 transition-colors" />}
+                                title="ATS-Optimized Templates"
+                            />
+                            <Feature
+                                icon={<Sparkles className="text-red-500 group-hover:text-white w-4 h-4 transition-colors" />}
+                                title="AI-Powered Content Suggestions"
+                            />
+                            <Feature
+                                icon={<ShieldCheck className="text-red-500 group-hover:text-white w-4 h-4 transition-colors" />}
+                                title="Instant PDF Export"
+                            />
+                        </div>
                     </div>
+
+                    <p className="text-[11px] text-gray-600 mt-8 relative z-10">
+                        © 2026 ResumeBuilder. All rights reserved.
+                    </p>
                 </div>
 
-                {/* Right Section */}
-                <div className="lg:w-1/2 p-14 flex justify-center items-center bg-white">
-                    <div className="w-full max-w-lg">
+                {/* Right Section - Pure Black Form */}
+                <div className="lg:w-7/12 p-8 md:p-10 flex justify-center items-center bg-[#050507]">
+                    <div className="w-full max-w-sm">
 
-                        <div className="text-center mb-10">
-                            <div className="w-20 h-20 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-5">
-                                <UserPlus className="text-[#E50914] w-10 h-10" />
-                            </div>
-
-                            <h2 className="text-4xl font-bold text-gray-900">
-                                Create Your Account
+                        <div className="mb-6">
+                            <h2 className="text-2xl font-bold text-white mb-1 tracking-tight">
+                                Get Started
                             </h2>
-
-                            <p className="text-gray-500 mt-3 text-lg">
-                                Start building your professional resume
+                            <p className="text-gray-400 text-xs">
+                                Enter your details to setup your account
                             </p>
                         </div>
 
                         {error && (
-                            <div className="bg-red-50 border border-red-200 text-red-600 p-4 rounded-2xl mb-6">
+                            <div className="bg-red-950/40 border border-red-600/50 text-red-400 p-3 rounded-xl text-xs mb-5 animate-pulse">
                                 {error}
                             </div>
                         )}
 
-                        <form onSubmit={handleSubmit} className="space-y-6">
+                        <form onSubmit={handleSubmit} className="space-y-4">
 
-                            {/* Name */}
-                            <div className="relative">
-                                <User className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-
-                                <input
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    placeholder="Full Name"
-                                    required
-                                    className="w-full pl-14 pr-4 py-4 border border-gray-300 rounded-2xl focus:ring-4 focus:ring-red-100 focus:border-[#E50914] outline-none transition"
-                                />
+                            {/* Name Input */}
+                            <div>
+                                <label className="block text-[11px] font-semibold uppercase tracking-wider text-gray-300 mb-1.5">
+                                    Full Name
+                                </label>
+                                <div className="relative group">
+                                    <User className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-red-500 w-4 h-4 transition-colors" />
+                                    <input
+                                        type="text"
+                                        required
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                        placeholder="Lucky Birle"
+                                        style={{
+                                            WebkitBoxShadow: "0 0 0 30px #0c0c0e inset",
+                                            WebkitTextFillColor: "#ffffff",
+                                        }}
+                                        className="w-full pl-10 pr-4 py-2.5 bg-[#0c0c0e] border border-red-950/50 hover:border-red-900/60 rounded-xl text-xs text-white placeholder-gray-600 focus:border-red-600 focus:ring-1 focus:ring-red-600 outline-none transition-all duration-200"
+                                    />
+                                </div>
                             </div>
 
-                            {/* Email */}
-                            <div className="relative">
-                                <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-
-                                <input
-                                    type="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="Email Address"
-                                    required
-                                    className="w-full pl-14 pr-4 py-4 border border-gray-300 rounded-2xl focus:ring-4 focus:ring-red-100 focus:border-[#E50914] outline-none transition"
-                                />
+                            {/* Email Input */}
+                            <div>
+                                <label className="block text-[11px] font-semibold uppercase tracking-wider text-gray-300 mb-1.5">
+                                    Email Address
+                                </label>
+                                <div className="relative group">
+                                    <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-red-500 w-4 h-4 transition-colors" />
+                                    <input
+                                        type="email"
+                                        required
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        placeholder="luckybirle09@gmail.com"
+                                        style={{
+                                            WebkitBoxShadow: "0 0 0 30px #0c0c0e inset",
+                                            WebkitTextFillColor: "#ffffff",
+                                        }}
+                                        className="w-full pl-10 pr-4 py-2.5 bg-[#0c0c0e] border border-red-950/50 hover:border-red-900/60 rounded-xl text-xs text-white placeholder-gray-600 focus:border-red-600 focus:ring-1 focus:ring-red-600 outline-none transition-all duration-200"
+                                    />
+                                </div>
                             </div>
 
-                            {/* Password */}
-                            <div className="relative">
-                                <Lock className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-
-                                <input
-                                    type={showPassword ? "text" : "password"}
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    placeholder="Password"
-                                    required
-                                    className="w-full pl-14 pr-14 py-4 border border-gray-300 rounded-2xl focus:ring-4 focus:ring-red-100 focus:border-[#E50914] outline-none transition"
-                                />
-
-                                <button
-                                    type="button"
-                                    className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                                    onClick={() => setShowPassword(!showPassword)}
-                                >
-                                    {showPassword ? (
-                                        <EyeOff className="w-5 h-5" />
-                                    ) : (
-                                        <Eye className="w-5 h-5" />
-                                    )}
-                                </button>
+                            {/* Password Input */}
+                            <div>
+                                <label className="block text-[11px] font-semibold uppercase tracking-wider text-gray-300 mb-1.5">
+                                    Password
+                                </label>
+                                <div className="relative group">
+                                    <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-red-500 w-4 h-4 transition-colors" />
+                                    <input
+                                        type={showPassword ? "text" : "password"}
+                                        required
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        placeholder="••••••••"
+                                        style={{
+                                            WebkitBoxShadow: "0 0 0 30px #0c0c0e inset",
+                                            WebkitTextFillColor: "#ffffff",
+                                        }}
+                                        className="w-full pl-10 pr-10 py-2.5 bg-[#0c0c0e] border border-red-950/50 hover:border-red-900/60 rounded-xl text-xs text-white placeholder-gray-600 focus:border-red-600 focus:ring-1 focus:ring-red-600 outline-none transition-all duration-200"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-red-500 transition-colors"
+                                    >
+                                        {showPassword ? (
+                                            <EyeOff className="w-3.5 h-3.5" />
+                                        ) : (
+                                            <Eye className="w-3.5 h-3.5" />
+                                        )}
+                                    </button>
+                                </div>
                             </div>
 
-                            {/* Submit Button */}
+                            {/* Primary Action Button */}
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="w-full bg-gradient-to-r from-[#E50914] to-[#B20710] text-white py-4 rounded-2xl font-semibold text-lg shadow-lg hover:scale-[1.02] hover:shadow-red-500/30 transition-all duration-300 disabled:opacity-50"
+                                className="w-full bg-red-600 hover:bg-red-500 text-white py-2.5 rounded-xl font-semibold text-xs shadow-[0_0_20px_rgba(220,38,38,0.4)] hover:shadow-[0_0_25px_rgba(220,38,38,0.7)] hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 disabled:opacity-50 mt-3 flex items-center justify-center gap-2 cursor-pointer"
                             >
+                                <UserPlus className="w-3.5 h-3.5" />
                                 {loading ? "Creating Account..." : "Create Account"}
                             </button>
 
-                            <div className="text-center text-gray-500">
+                            {/* Sign In Link */}
+                            <div className="text-center text-xs text-gray-400 pt-3">
                                 Already have an account?
                                 <Link
-                                    className="text-[#E50914] font-semibold ml-2 hover:text-[#B20710]"
                                     to="/login"
+                                    className="text-red-500 font-semibold ml-1.5 hover:text-red-400 hover:underline transition-colors"
                                 >
-                                    Login
+                                    Sign In
                                 </Link>
                             </div>
 
                         </form>
-
                     </div>
                 </div>
 
