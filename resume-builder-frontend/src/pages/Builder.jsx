@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import api from "../api/axiosInstance";
 import PersonalInfoForm from "../components/forms/PersonalInfoForm";
 import EducationForm from "../components/forms/EducationForm";
@@ -20,7 +21,10 @@ const DEFAULT_TABS = [
 ];
 
 export default function Builder() {
-    const { register, control, watch, getValues, setValue } = useForm({
+    const { id } = useParams(); // Get resume ID from URL if editing
+    const navigate = useNavigate();
+
+    const { register, control, watch, getValues, setValue, reset } = useForm({
         defaultValues: {
             personalInfo: {},
             education: [],
@@ -28,15 +32,16 @@ export default function Builder() {
             projects: [],
             skillsRaw: "",
             achievementsRaw: "",
-            customSections: [], // Stores extra custom section objects
+            customSections: [],
             sectionOrder: ["summary", "experience", "projects", "skills", "education", "achievements"]
         },
     });
 
     const [activeTab, setActiveTab] = useState(0);
     const [tabs, setTabs] = useState(DEFAULT_TABS);
-    const [resumeId, setResumeId] = useState(null);
+    const [resumeId, setResumeId] = useState(id || null);
     const [saving, setSaving] = useState(false);
+    const [loadingResume, setLoadingResume] = useState(false);
     const [toast, setToast] = useState(null);
     const [pageLoaded, setPageLoaded] = useState(false);
     const [tabKey, setTabKey] = useState(0);
@@ -54,6 +59,78 @@ export default function Builder() {
         const timer = setTimeout(() => setPageLoaded(true), 50);
         return () => clearTimeout(timer);
     }, []);
+
+    // 🌟 FETCH SAVED RESUME DATA IF EDITING 🌟
+    useEffect(() => {
+        if (id) {
+            fetchSavedResume(id);
+        }
+    }, [id]);
+
+    const fetchSavedResume = async (targetId) => {
+        try {
+            setLoadingResume(true);
+            const res = await api.get(`/resumes/${targetId}`);
+            const data = res.data;
+
+            if (data) {
+                setResumeId(targetId);
+
+                // Reconstruct Custom Tabs
+                const loadedCustomSections = (data.customSections || []).map((c, idx) => {
+                    const sectionKey = `custom_${Date.now()}_${idx}`;
+                    return {
+                        id: sectionKey,
+                        title: c.title,
+                        contentRaw: Array.isArray(c.items) ? c.items.join("\n") : (c.contentRaw || "")
+                    };
+                });
+
+                // Dynamically add custom tabs into state
+                const customTabs = loadedCustomSections.map((c) => ({
+                    id: c.id,
+                    label: c.title,
+                    icon: "⭐",
+                    isCustom: true,
+                }));
+
+                setTabs([...DEFAULT_TABS, ...customTabs]);
+
+                // Map data to React Hook Form values
+                reset({
+                    personalInfo: data.personalInfo || {},
+                    education: data.education || [],
+                    experience: (data.experience || []).map((exp) => ({
+                        ...exp,
+                        bulletPointsRaw: Array.isArray(exp.bulletPoints)
+                            ? exp.bulletPoints.join("\n")
+                            : exp.bulletPointsRaw || "",
+                    })),
+                    projects: (data.projects || []).map((proj) => ({
+                        ...proj,
+                        techStackRaw: Array.isArray(proj.techStack)
+                            ? proj.techStack.join(", ")
+                            : proj.techStackRaw || "",
+                        bulletPointsRaw: Array.isArray(proj.bulletPoints)
+                            ? proj.bulletPoints.join("\n")
+                            : proj.bulletPointsRaw || "",
+                    })),
+                    skillsRaw: Array.isArray(data.skills)
+                        ? data.skills.join("\n")
+                        : data.skillsRaw || "",
+                    achievementsRaw: Array.isArray(data.achievements)
+                        ? data.achievements.join("\n")
+                        : data.achievementsRaw || "",
+                    customSections: loadedCustomSections,
+                    sectionOrder: data.sectionOrder || ["summary", "experience", "projects", "skills", "education", "achievements"]
+                });
+            }
+        } catch (err) {
+            showToast("Failed to load saved resume details", "error");
+        } finally {
+            setLoadingResume(false);
+        }
+    };
 
     const handleTabChange = (index) => {
         setActiveTab(index);
@@ -240,6 +317,17 @@ export default function Builder() {
         }
     };
 
+    if (loadingResume) {
+        return (
+            <div className="min-h-screen bg-slate-100 flex items-center justify-center">
+                <div className="flex flex-col items-center gap-3">
+                    <div className="w-10 h-10 border-4 border-red-200 border-t-[#E50914] rounded-full animate-spin"></div>
+                    <p className="text-gray-600 font-semibold text-sm">Loading saved resume details...</p>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-100 via-gray-50 to-red-50">
 
@@ -364,7 +452,7 @@ export default function Builder() {
                         {!showCustomModal ? (
                             <button
                                 onClick={() => setShowCustomModal(true)}
-                                className="w-full py-3 border-2 border-dashed border-red-300 bg-red-50/50 text-red-600 rounded-2xl font-semibold text-sm flex items-center justify-center gap-2 hover:bg-red-50 hover:border-red-500 transition-all duration-300 active:scale-98"
+                                className="w-full py-3 border-2 border-dashed border-red-300 bg-red-50/50 text-red-600 rounded-2xl font-semibold text-sm flex items-center justify-center gap-2 hover:bg-red-50 hover:border-red-500 transition-all duration-300 active:scale-98 cursor-pointer"
                             >
                                 <Plus className="w-4 h-4" /> Add Custom Section (e.g. Certifications, Languages)
                             </button>
@@ -381,13 +469,13 @@ export default function Builder() {
                                     />
                                     <button
                                         onClick={handleAddCustomSection}
-                                        className="bg-[#E50914] text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-red-700 active:scale-95 transition-all"
+                                        className="bg-[#E50914] text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-red-700 active:scale-95 transition-all cursor-pointer"
                                     >
                                         Add
                                     </button>
                                     <button
                                         onClick={() => setShowCustomModal(false)}
-                                        className="bg-gray-200 text-gray-700 px-3 py-2.5 rounded-xl text-sm font-medium hover:bg-gray-300"
+                                        className="bg-gray-200 text-gray-700 px-3 py-2.5 rounded-xl text-sm font-medium hover:bg-gray-300 cursor-pointer"
                                     >
                                         Cancel
                                     </button>
@@ -423,6 +511,7 @@ export default function Builder() {
                             disabled:opacity-50
                             disabled:hover:scale-100
                             flex items-center justify-center gap-2
+                            cursor-pointer
                         "
                         >
                             {saving ? (
@@ -451,6 +540,7 @@ export default function Builder() {
                             hover:scale-105
                             hover:shadow-[0_10px_30px_rgba(0,0,0,0.30)]
                             active:scale-95
+                            cursor-pointer
                         "
                         >
                             ⬇️ Download PDF
