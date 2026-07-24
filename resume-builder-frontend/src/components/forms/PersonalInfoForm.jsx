@@ -1,14 +1,12 @@
 export default function PersonalInfoForm({ register }) {
-    // Generic Professional Placeholders for Basic Details
+    // Basic Details (Headline & Address completely removed)
     const basicFields = [
-        { name: "personalInfo.fullName", label: "Full Name", placeholder: "John Doe" },
-        { name: "personalInfo.headline", label: "Headline / Title", placeholder: "Software Engineer | Full Stack Developer" },
+        { name: "personalInfo.fullName", label: "Full Name", placeholder: "Name" },
         { name: "personalInfo.email", label: "Email", placeholder: "johndoe@example.com" },
         { name: "personalInfo.phone", label: "Phone", placeholder: "+1 234 567 8900" },
-        { name: "personalInfo.address", label: "Address / City", placeholder: "New York, USA" },
     ];
 
-    // Generic Social Links Placeholders
+    // Social Links Configuration
     const socialFields = [
         {
             title: "LinkedIn Profile",
@@ -49,7 +47,7 @@ export default function PersonalInfoForm({ register }) {
                 ))}
             </div>
 
-            {/* 2. Links Section (Display Name & URL Separate Inputs) */}
+            {/* 2. Social Links Section */}
             <div className="border-t border-gray-200 pt-4 space-y-4">
                 <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider">Social Links & Portfolios</h4>
 

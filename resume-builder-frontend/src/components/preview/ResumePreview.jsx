@@ -12,29 +12,25 @@ export default function ResumePreview({ data = {} }) {
         sectionOrder = ["summary", "experience", "projects", "skills", "education", "achievements"]
     } = data;
 
-    // Summary dono jagah se handle karein
+    // Helper to build safe HTTP/HTTPS link URLs
+    const formatUrl = (url) => {
+        if (!url) return "#";
+        return url.startsWith("http://") || url.startsWith("https://") ? url : `https://${url}`;
+    };
+
+    // Summary handling
     const summaryText = data.summary || personalInfo.summary || "";
 
     const skillLines = (skillsRaw || "").split("\n").filter(Boolean);
     const achievementLines = (achievementsRaw || "").split("\n").filter(Boolean);
 
-    // Bullet points ko parse karne ka robust helper
+    // Bullet points helper
     const getBulletPoints = (item) => {
-        if (item.bulletPointsRaw) {
-            return item.bulletPointsRaw.split("\n").filter(Boolean);
-        }
-        if (Array.isArray(item.bulletPoints)) {
-            return item.bulletPoints;
-        }
-        if (typeof item.bulletPoints === "string") {
-            return item.bulletPoints.split("\n").filter(Boolean);
-        }
-        if (Array.isArray(item.points)) {
-            return item.points;
-        }
-        if (typeof item.description === "string") {
-            return item.description.split("\n").filter(Boolean);
-        }
+        if (item.bulletPointsRaw) return item.bulletPointsRaw.split("\n").filter(Boolean);
+        if (Array.isArray(item.bulletPoints)) return item.bulletPoints;
+        if (typeof item.bulletPoints === "string") return item.bulletPoints.split("\n").filter(Boolean);
+        if (Array.isArray(item.points)) return item.points;
+        if (typeof item.description === "string") return item.description.split("\n").filter(Boolean);
         return [];
     };
 
@@ -205,9 +201,29 @@ export default function ResumePreview({ data = {} }) {
         }
     };
 
+    // Header Links list with Clickable HTML <a> tags
+    const linksList = [
+        personalInfo.phone && { isLink: false, text: personalInfo.phone },
+        personalInfo.email && { isLink: false, text: personalInfo.email },
+        (personalInfo.linkedinUrl || personalInfo.linkedinLabel || personalInfo.linkedin) && {
+            isLink: true,
+            text: personalInfo.linkedinLabel || personalInfo.linkedin || "LinkedIn",
+            url: formatUrl(personalInfo.linkedinUrl || personalInfo.linkedin)
+        },
+        (personalInfo.githubUrl || personalInfo.githubLabel || personalInfo.github) && {
+            isLink: true,
+            text: personalInfo.githubLabel || personalInfo.github || "GitHub",
+            url: formatUrl(personalInfo.githubUrl || personalInfo.github)
+        },
+        (personalInfo.portfolioUrl || personalInfo.portfolioLabel || personalInfo.portfolio) && {
+            isLink: true,
+            text: personalInfo.portfolioLabel || personalInfo.portfolio || "Portfolio",
+            url: formatUrl(personalInfo.portfolioUrl || personalInfo.portfolio)
+        }
+    ].filter(Boolean);
+
     return (
         <>
-            {/* Inject CSS rules for multi-page PDF generation */}
             <style>{`
                 @media print {
                     @page {
@@ -224,27 +240,33 @@ export default function ResumePreview({ data = {} }) {
                 className="bg-white p-10 text-gray-900 shadow-xl border border-gray-200 h-auto"
                 style={{
                     fontFamily: "'Times New Roman', Times, 'Computer Modern', serif",
-                    minHeight: "297mm", // Keeps initial layout 1 page min height, but allows growing dynamically
+                    minHeight: "297mm",
                     width: "210mm",
                     boxSizing: "border-box"
                 }}
             >
-                {/* Header */}
+                {/* Header Section */}
                 <div className="text-center mb-4">
                     <h1 className="text-[22pt] font-normal tracking-normal text-gray-900 mb-1">
                         {personalInfo.fullName || "Your Name"}
                     </h1>
 
                     <div className="text-[9.5pt] text-gray-800 flex justify-center items-center flex-wrap gap-x-2">
-                        {[
-                            personalInfo.phone,
-                            personalInfo.email,
-                            personalInfo.linkedin,
-                            personalInfo.portfolio || personalInfo.location
-                        ].filter(Boolean).map((info, idx, arr) => (
+                        {linksList.map((item, idx) => (
                             <React.Fragment key={idx}>
-                                <span>{info}</span>
-                                {idx < arr.length - 1 && <span className="text-gray-400">|</span>}
+                                {item.isLink ? (
+                                    <a
+                                        href={item.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-blue-700 hover:underline hover:text-blue-900"
+                                    >
+                                        {item.text}
+                                    </a>
+                                ) : (
+                                    <span>{item.text}</span>
+                                )}
+                                {idx < linksList.length - 1 && <span className="text-gray-400">|</span>}
                             </React.Fragment>
                         ))}
                     </div>
