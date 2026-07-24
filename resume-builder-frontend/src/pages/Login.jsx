@@ -139,7 +139,7 @@ export default function Login() {
                                         required
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
-                                        placeholder="you@example.com"
+                                        placeholder="..@gmail.com"
                                         style={{
                                             WebkitBoxShadow: "0 0 0 30px #0c0c0e inset",
                                             WebkitTextFillColor: "#ffffff",

@@ -35,21 +35,25 @@ export default function ResumePreview({ data = {} }) {
     };
 
     const renderSection = (sectionName) => {
-        const secKey = sectionName.toLowerCase();
+        const secKey = (sectionName || "").toLowerCase().trim();
+
+        // Safe Summary check
+        if (secKey.includes("summary")) {
+            if (!summaryText.trim()) return null;
+            return (
+                <div key="summary" className="mb-3 break-inside-avoid" style={{ breakInside: "avoid", pageBreakInside: "avoid" }}>
+                    <SectionHeading title="Professional Summary" />
+                    <p className="text-[10pt] leading-[1.3] text-gray-900 text-justify whitespace-pre-line">
+                        {summaryText}
+                    </p>
+                </div>
+            );
+        }
 
         switch (secKey) {
-            case "summary":
-                if (!summaryText) return null;
-                return (
-                    <div key="summary" className="mb-3 break-inside-avoid" style={{ breakInside: "avoid", pageBreakInside: "avoid" }}>
-                        <SectionHeading title="Professional Summary" />
-                        <p className="text-[10pt] leading-[1.3] text-gray-900 text-justify">
-                            {summaryText}
-                        </p>
-                    </div>
-                );
-
             case "experience":
+            case "work experience":
+            case "professional experience":
                 if (experience.length === 0) return null;
                 return (
                     <div key="experience" className="mb-3">
@@ -60,14 +64,16 @@ export default function ResumePreview({ data = {} }) {
                                 <div key={i} className="mb-2.5 break-inside-avoid" style={{ breakInside: "avoid", pageBreakInside: "avoid" }}>
                                     <div className="flex justify-between items-baseline font-bold text-[10.5pt] text-gray-900">
                                         <span>{exp.company}</span>
+
+                                        {/* 👇 DYNAMIC LOCATION (NO HARDCODED VALUE) */}
                                         <span className="font-normal text-[9.5pt] text-gray-800">
-                                            {exp.location || "Gandhidham, Gujarat"}
+                                            {exp.location || ""}
                                         </span>
                                     </div>
                                     <div className="flex justify-between items-baseline italic text-[9.5pt] text-gray-800 -mt-0.5 mb-1">
                                         <span>{exp.role || exp.position}</span>
                                         <span>
-                                            {exp.startDate} – {exp.currentlyWorking ? "Present" : exp.endDate}
+                                            {exp.startDate} {exp.startDate && "–"} {exp.currentlyWorking ? "Present" : exp.endDate}
                                         </span>
                                     </div>
                                     {bullets.length > 0 && (
@@ -84,6 +90,7 @@ export default function ResumePreview({ data = {} }) {
                 );
 
             case "projects":
+            case "personal projects":
                 if (projects.length === 0) return null;
                 return (
                     <div key="projects" className="mb-3">
@@ -114,6 +121,7 @@ export default function ResumePreview({ data = {} }) {
                 );
 
             case "skills":
+            case "technical skills":
                 if (skillLines.length === 0) return null;
                 return (
                     <div key="skills" className="mb-3 break-inside-avoid" style={{ breakInside: "avoid", pageBreakInside: "avoid" }}>
@@ -143,8 +151,10 @@ export default function ResumePreview({ data = {} }) {
                             <div key={i} className="mb-1.5">
                                 <div className="flex justify-between items-baseline font-bold text-[10.5pt] text-gray-900">
                                     <span>{edu.institution}</span>
-                                    <span className="font-normal text-[9.5pt]">
-                                        {edu.location || "Madhya Pradesh"}
+
+                                    {/* 👇 DYNAMIC LOCATION (NO HARDCODED VALUE) */}
+                                    <span className="font-normal text-[9.5pt] text-gray-800">
+                                        {edu.location || ""}
                                     </span>
                                 </div>
                                 <div className="flex justify-between items-baseline italic text-[9.5pt] text-gray-800 -mt-0.5">
@@ -153,7 +163,7 @@ export default function ResumePreview({ data = {} }) {
                                         {edu.gradeOrCgpa ? ` – ${edu.gradeOrCgpa}` : ""}
                                     </span>
                                     <span>
-                                        {edu.startDate} – {edu.endDate}
+                                        {edu.startDate} {edu.startDate && "–"} {edu.endDate}
                                     </span>
                                 </div>
                             </div>
@@ -176,7 +186,7 @@ export default function ResumePreview({ data = {} }) {
 
             default: {
                 const customSec = customSections.find(
-                    (cs) => cs.title && cs.title.trim().toLowerCase() === secKey
+                    (cs) => cs.id === sectionName || (cs.title && cs.title.trim().toLowerCase() === secKey)
                 );
 
                 if (!customSec) return null;
@@ -188,7 +198,7 @@ export default function ResumePreview({ data = {} }) {
                 if (items.length === 0) return null;
 
                 return (
-                    <div key={customSec.title} className="mb-3 break-inside-avoid" style={{ breakInside: "avoid", pageBreakInside: "avoid" }}>
+                    <div key={customSec.id || customSec.title || secKey} className="mb-3 break-inside-avoid" style={{ breakInside: "avoid", pageBreakInside: "avoid" }}>
                         <SectionHeading title={customSec.title} />
                         <ul className="list-disc ml-5 text-[9.5pt] leading-[1.35] text-gray-900 space-y-0.5">
                             {items.map((item, idx) => (

@@ -143,7 +143,7 @@ export default function Register() {
                                         autoComplete="off"
                                         value={name}
                                         onChange={(e) => setName(e.target.value)}
-                                        placeholder="John Doe"
+                                        placeholder="Name"
                                         style={{
                                             WebkitBoxShadow: "0 0 0 30px #0c0c0e inset",
                                             WebkitTextFillColor: "#ffffff",
@@ -166,7 +166,7 @@ export default function Register() {
                                         autoComplete="off"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
-                                        placeholder="name@example.com"
+                                        placeholder="..@gmail.com"
                                         style={{
                                             WebkitBoxShadow: "0 0 0 30px #0c0c0e inset",
                                             WebkitTextFillColor: "#ffffff",

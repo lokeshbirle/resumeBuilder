@@ -24,7 +24,7 @@ export default function ProjectsForm({ control, register }) {
                         <label className="block text-xs font-medium text-slate-700 mb-1">Tech Stack (comma separated)</label>
                         <input
                             {...register(`projects.${index}.techStackRaw`)}
-                            placeholder="e.g. React, Node.js, MongoDB"
+                            placeholder="e.g. Java, DSA, MongoDB"
                             className="w-full border border-slate-300 rounded-md px-3 py-2 text-xs focus:ring-2 focus:ring-red-500 focus:outline-none"
                         />
                     </div>

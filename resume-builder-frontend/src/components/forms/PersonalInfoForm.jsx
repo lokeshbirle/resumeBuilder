@@ -2,8 +2,8 @@ export default function PersonalInfoForm({ register }) {
     // Basic Details (Headline & Address completely removed)
     const basicFields = [
         { name: "personalInfo.fullName", label: "Full Name", placeholder: "Name" },
-        { name: "personalInfo.email", label: "Email", placeholder: "johndoe@example.com" },
-        { name: "personalInfo.phone", label: "Phone", placeholder: "+1 234 567 8900" },
+        { name: "personalInfo.email", label: "Email", placeholder: "..@gmail.com" },
+        { name: "personalInfo.phone", label: "Phone", placeholder: "+91 00000-00000" },
     ];
 
     // Social Links Configuration
@@ -83,7 +83,7 @@ export default function PersonalInfoForm({ register }) {
                 <textarea
                     {...register("personalInfo.summary")}
                     rows={4}
-                    placeholder="Enthusiastic and results-driven professional with experience in software development and quality assurance..."
+                    placeholder="Write a brief professional summary highlighting your experience..."
                     className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-red-500 focus:border-red-500 focus:outline-none transition-all resize-y"
                 />
             </div>

@@ -12,7 +12,7 @@ export default function AchievementsForm({ register }) {
             <textarea
                 {...register("achievementsRaw")}
                 rows={8}
-                placeholder={`• Secured 1st Rank in Smart India Hackathon 2024\n• Certified AWS Cloud Practitioner\n• Published research paper on Machine Learning in IEEE`}
+                placeholder={`• Secured 1st Rank in Smart India Hackathon 2024\n• Certified AWS Cloud Practitioner`}
                 className="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs focus:ring-2 focus:ring-red-500 focus:border-red-500 focus:outline-none transition-all"
             />
         </div>
