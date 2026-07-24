@@ -128,7 +128,7 @@ export default function Register() {
                             </div>
                         )}
 
-                        <form onSubmit={handleSubmit} className="space-y-4">
+                        <form onSubmit={handleSubmit} className="space-y-4" autoComplete="off">
 
                             {/* Name Input */}
                             <div>
@@ -140,9 +140,10 @@ export default function Register() {
                                     <input
                                         type="text"
                                         required
+                                        autoComplete="off"
                                         value={name}
                                         onChange={(e) => setName(e.target.value)}
-                                        placeholder="Lucky Birle"
+                                        placeholder="John Doe"
                                         style={{
                                             WebkitBoxShadow: "0 0 0 30px #0c0c0e inset",
                                             WebkitTextFillColor: "#ffffff",
@@ -162,9 +163,10 @@ export default function Register() {
                                     <input
                                         type="email"
                                         required
+                                        autoComplete="off"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
-                                        placeholder="luckybirle09@gmail.com"
+                                        placeholder="name@example.com"
                                         style={{
                                             WebkitBoxShadow: "0 0 0 30px #0c0c0e inset",
                                             WebkitTextFillColor: "#ffffff",
@@ -184,9 +186,10 @@ export default function Register() {
                                     <input
                                         type={showPassword ? "text" : "password"}
                                         required
+                                        autoComplete="new-password"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
-                                        placeholder="••••••••"
+                                        placeholder="password"
                                         style={{
                                             WebkitBoxShadow: "0 0 0 30px #0c0c0e inset",
                                             WebkitTextFillColor: "#ffffff",
