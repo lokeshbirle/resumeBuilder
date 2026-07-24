@@ -1,14 +1,14 @@
 export default function PersonalInfoForm({ register }) {
-    // Basic Details
+    // Generic Professional Placeholders for Basic Details
     const basicFields = [
-        { name: "personalInfo.fullName", label: "Full Name", placeholder: "Lokesh Birle" },
-        { name: "personalInfo.headline", label: "Headline / Title", placeholder: "Quality Assurance Professional" },
-        { name: "personalInfo.email", label: "Email", placeholder: "mandloiaanchal@gmail.com" },
-        { name: "personalInfo.phone", label: "Phone", placeholder: "+91-9669784588" },
-        { name: "personalInfo.address", label: "Address / City", placeholder: "Bangalore, India" },
+        { name: "personalInfo.fullName", label: "Full Name", placeholder: "John Doe" },
+        { name: "personalInfo.headline", label: "Headline / Title", placeholder: "Software Engineer | Full Stack Developer" },
+        { name: "personalInfo.email", label: "Email", placeholder: "johndoe@example.com" },
+        { name: "personalInfo.phone", label: "Phone", placeholder: "+1 234 567 8900" },
+        { name: "personalInfo.address", label: "Address / City", placeholder: "New York, USA" },
     ];
 
-    // Clickable Social Links Details (Label + Actual URL)
+    // Generic Social Links Placeholders
     const socialFields = [
         {
             title: "LinkedIn Profile",
@@ -27,9 +27,9 @@ export default function PersonalInfoForm({ register }) {
         {
             title: "Portfolio / LeetCode / Other Link",
             labelName: "personalInfo.portfolioLabel",
-            labelPlaceholder: "leetcode.com/lokeshbirle",
+            labelPlaceholder: "portfolio.com/username",
             urlName: "personalInfo.portfolioUrl",
-            urlPlaceholder: "https://leetcode.com/lokeshbirle"
+            urlPlaceholder: "https://portfolio.com/username"
         },
     ];
 
@@ -85,7 +85,7 @@ export default function PersonalInfoForm({ register }) {
                 <textarea
                     {...register("personalInfo.summary")}
                     rows={4}
-                    placeholder="B.Pharm graduate with experience in pharmaceutical industry..."
+                    placeholder="Enthusiastic and results-driven professional with experience in software development and quality assurance..."
                     className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-red-500 focus:border-red-500 focus:outline-none transition-all resize-y"
                 />
             </div>

@@ -42,7 +42,15 @@ export default function Builder() {
 
     const { register, control, watch, getValues, setValue, reset } = useForm({
         defaultValues: {
-            personalInfo: {},
+            personalInfo: {
+                fullName: "",
+                email: "",
+                phone: "",
+                address: "",
+                linkedin: "",
+                portfolio: "",
+                summary: ""
+            },
             education: [],
             experience: [],
             projects: [],
@@ -104,8 +112,19 @@ export default function Builder() {
 
                 setTabs([...DEFAULT_TABS, ...customTabs]);
 
+                // Ensure ALL Personal Info fields are explicitly hydrated
+                const pInfo = data.personalInfo || {};
+
                 reset({
-                    personalInfo: data.personalInfo || {},
+                    personalInfo: {
+                        fullName: pInfo.fullName || pInfo.name || "",
+                        email: pInfo.email || "",
+                        phone: pInfo.phone || "",
+                        address: pInfo.address || "",
+                        linkedin: pInfo.linkedin || pInfo.linkedIn || "",
+                        portfolio: pInfo.portfolio || pInfo.github || pInfo.website || "",
+                        summary: pInfo.summary || ""
+                    },
                     education: data.education || [],
                     experience: (data.experience || []).map((exp) => ({
                         ...exp,
@@ -194,9 +213,18 @@ export default function Builder() {
     // PAYLOAD BUILDER
     const buildPayload = () => {
         const values = getValues();
+        const pInfo = values.personalInfo || {};
         return {
-            title: values.personalInfo?.fullName ? `${values.personalInfo.fullName}'s Resume` : "My Resume",
-            personalInfo: values.personalInfo,
+            title: pInfo.fullName ? `${pInfo.fullName}'s Resume` : "My Resume",
+            personalInfo: {
+                fullName: pInfo.fullName || "",
+                email: pInfo.email || "",
+                phone: pInfo.phone || "",
+                address: pInfo.address || "",
+                linkedin: pInfo.linkedin || "",
+                portfolio: pInfo.portfolio || "",
+                summary: pInfo.summary || ""
+            },
             education: values.education || [],
             experience: (values.experience || []).map((e) => ({
                 ...e,
