@@ -1,7 +1,7 @@
 spring:
   data:
     mongodb:
-      uri: mongodb+srv://lokeshbirle09_db_user:MongoDB@cluster0.8nnx9ar.mongodb.net/resumebuilder?retryWrites=true&w=majority&appName=Cluster0
+      uri: ${SPRING_DATA_MONGODB_URI}
 
 server:
   port: 8080
